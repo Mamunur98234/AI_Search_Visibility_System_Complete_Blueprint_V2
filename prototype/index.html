@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AISV Prototype</title>
+<style>
+:root{
+  --bg:#f7f8fa;--surface:#fff;--surface-2:#f0f2f5;--text:#16191f;--muted:#5b6472;--border:#dde1e7;
+  --accent:#1d4ed8;--accent-soft:#e6edfd;--warn-bg:#fff4d6;--warn-text:#6b4a00;--bad:#b42318;--good:#067647;
+  --chip-bg:#eef0f3;--focus:#1d4ed8;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1115;--surface:#171a20;--surface-2:#1e222a;--text:#e7e9ee;--muted:#9aa3b2;--border:#2b313b;
+    --accent:#7aa2ff;--accent-soft:#1b2540;--warn-bg:#3a2f10;--warn-text:#f5d27a;--bad:#ff8a80;--good:#5fd39a;
+    --chip-bg:#252a33;--focus:#7aa2ff;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1115;--surface:#171a20;--surface-2:#1e222a;--text:#e7e9ee;--muted:#9aa3b2;--border:#2b313b;
+  --accent:#7aa2ff;--accent-soft:#1b2540;--warn-bg:#3a2f10;--warn-text:#f5d27a;--bad:#ff8a80;--good:#5fd39a;
+  --chip-bg:#252a33;--focus:#7aa2ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+main:focus{outline:none}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.banner{background:var(--warn-bg);color:var(--warn-text);padding:8px 16px;font-size:13px;text-align:center}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:calc(100vh - 37px)}
+nav{background:var(--surface);border-right:1px solid var(--border);padding:16px 8px}
+nav h1{font-size:15px;margin:0 8px 16px}
+nav ul{list-style:none;margin:0;padding:0}
+nav a,nav span.dis{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:6px;color:var(--text);text-decoration:none;font-size:14px}
+nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+nav a:hover{background:var(--surface-2)}
+nav span.dis{color:var(--muted);cursor:not-allowed}
+nav .ph{font-size:11px;background:var(--chip-bg);border-radius:10px;padding:0 6px;color:var(--muted)}
+nav .group{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 10px 4px}
+main{padding:24px;max-width:1200px;width:100%;min-width:0}
+h2{margin:0 0 4px;font-size:22px}
+.sub{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.card h3{margin:0 0 8px;font-size:14px;color:var(--muted);font-weight:600}
+.big{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.scope{margin-top:8px;font-size:12px;color:var(--muted)}
+.chip{display:inline-block;font-size:12px;padding:1px 8px;border-radius:10px;background:var(--chip-bg);color:var(--text);white-space:nowrap}
+.chip.ok{color:var(--good)}.chip.bad{color:var(--bad)}.chip.acc{background:var(--accent-soft);color:var(--accent)}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:top}
+th{background:var(--surface-2);font-weight:600;font-size:13px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto;margin-bottom:20px}
+button{font:inherit;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] button.primary{color:#0f1115}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.primary{color:#0f1115}}
+button[disabled]{opacity:.55;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.note{background:var(--surface-2);border-left:3px solid var(--accent);padding:10px 12px;border-radius:4px;font-size:13px;margin:0 0 16px}
+.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+details{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+summary{cursor:pointer;font-weight:600}
+.bar{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden;min-width:80px}
+.bar>span{display:block;height:100%;background:var(--accent)}
+.toggle{position:fixed;right:12px;bottom:12px}
+.kanban{display:grid;grid-template-columns:repeat(4,minmax(200px,1fr));gap:12px;overflow-x:auto}
+.kanban .col{background:var(--surface-2);border-radius:8px;padding:10px;min-height:200px}
+.kanban .col h4{margin:0 0 8px;font-size:13px}
+.kanban .item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:8px;font-size:13px}
+.menu-btn{display:none}
+@media (max-width:800px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  nav{display:none;border-right:0;border-bottom:1px solid var(--border)}
+  nav.open{display:block}
+  .menu-btn{display:inline-block;margin:12px 16px 0}
+  main{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="banner" role="note"><strong>Prototype · Demo fixtures only.</strong> Fictional organizations and numbers on reserved example domains. No backend, no real measurements.</div>
+<button class="menu-btn" aria-expanded="false" aria-controls="sidenav" id="menuBtn">Menu</button>
+<div class="layout">
+<nav id="sidenav" aria-label="Main">
+  <h1>AI Search Visibility</h1>
+  <ul id="navlist"></ul>
+</nav>
+<main id="main" tabindex="-1"></main>
+</div>
+<button class="toggle" id="themeBtn" aria-label="Toggle color theme">Theme</button>
+<script>
+// ---------- DEMO FIXTURES (fictional) ----------
+const D = {
+  clients:[
+    {id:"c1",name:"Northwind Analytics (demo)",domain:"northwind.example",status:"Active",owner:"A. Rivera (demo)",renewal:"2027-03-01",verified:true},
+    {id:"c2",name:"Contoso Payroll (demo)",domain:"contoso.example",status:"Onboarding",owner:"J. Chen (demo)",renewal:"2027-06-15",verified:false},
+    {id:"c3",name:"Fabrikam CRM (demo)",domain:"fabrikam.example",status:"Active",owner:"A. Rivera (demo)",renewal:"2027-01-20",verified:true}
+  ],
+  sample:{n:120,excluded:6,failed:4,providers:"Provider A API, Provider B API (demo)",range:"2026-10-01 → 2026-10-31",market:"US / en-US",set:"\"SaaS buyers\" v3 (40 prompts × 3 runs)"},
+  vis:{mention:[38,120],citation:[17,120],share:[21,164]},
+  comp:[
+    {name:"Northwind Analytics (client)",m:38,c:17},
+    {name:"Competitor X (demo)",m:52,c:29},
+    {name:"Competitor Y (demo)",m:24,c:9}
+  ],
+  issues:[
+    {rule:"Missing meta description",sev:"Low",aff:41,elig:312},
+    {rule:"Broken internal link target (4xx)",sev:"High",aff:7,elig:312},
+    {rule:"Canonical points to non-200 URL",sev:"High",aff:3,elig:298},
+    {rule:"Duplicate title",sev:"Medium",aff:18,elig:312},
+    {rule:"JSON-LD syntax error",sev:"Medium",aff:2,elig:57},
+    {rule:"Redirect chain > 2 hops",sev:"Medium",aff:5,elig:340}
+  ],
+  tasks:{
+    "To do":["Add FAQ section to pricing page","Fix 7 broken internal links"],
+    "Awaiting approval":["Update Organization JSON-LD (client sign-off)"],
+    "Implemented":["Consolidate duplicate titles on /blog"],
+    "Verified":["Fix canonical on /features (re-crawl passed)"]
+  },
+  approvals:[
+    {item:"Update Organization JSON-LD on homepage",req:"J. Chen (demo)",approver:"Client Admin (demo)",status:"Pending"},
+    {item:"Publish brief: 'Payroll compliance checklist'",req:"M. Okafor (demo)",approver:"Client Admin (demo)",status:"Changes requested"}
+  ]
+};
+const pct=(a,b)=> b? (100*a/b).toFixed(1)+"%" : "No data";
+const scopeLine=()=>`n = ${D.sample.n} eligible runs · ${D.sample.providers} · ${D.sample.range} · ${D.sample.market} · Prompt set ${D.sample.set} · <span class="chip acc">observed sample</span>`;
+
+// ---------- NAV ----------
+const NAV=[
+  {g:"Agency"},
+  {h:"overview",t:"Agency overview"},
+  {h:"clients",t:"Clients"},
+  {h:"approvals",t:"Approval center"},
+  {g:"Project: Northwind (demo)"},
+  {h:"onboarding",t:"Onboarding & domains"},
+  {h:"audit",t:"Technical audit"},
+  {h:"integrations",t:"Search integrations"},
+  {h:"visibility",t:"AI visibility explorer"},
+  {h:"prompts",t:"Prompt sets"},
+  {h:"competitors",t:"Competitor comparison"},
+  {t:"Content & opportunities",ph:"Phase 6"},
+  {h:"tasks",t:"Recommendations & tasks"},
+  {t:"Verification history",ph:"Phase 6"},
+  {h:"reports",t:"Reports"},
+  {g:"Settings"},
+  {h:"providers",t:"Providers"},
+  {h:"members",t:"Members & audit log"},
+  {t:"Branding",ph:"Phase 7"}
+];
+function renderNav(cur){
+  document.getElementById("navlist").innerHTML=NAV.map(n=>{
+    if(n.g) return `<li class="group">${n.g}</li>`;
+    if(n.ph) return `<li><span class="dis" aria-disabled="true" title="Available in ${n.ph}">${n.t}<span class="ph">${n.ph}</span></span></li>`;
+    return `<li><a href="#${n.h}" ${cur===n.h?'aria-current="page"':''}>${n.t}</a></li>`;
+  }).join("");
+}
+
+// ---------- SCREENS ----------
+const S={
+overview:()=>`
+<h2>Agency overview</h2><p class="sub">Demo agency · 3 clients</p>
+<div class="grid">
+ <div class="card"><h3>Active clients</h3><div class="big">2</div><div class="scope">1 onboarding</div></div>
+ <div class="card"><h3>Pending approvals</h3><div class="big">2</div><div class="scope"><a href="#approvals">Open approval center</a></div></div>
+ <div class="card"><h3>Open high-severity issues</h3><div class="big">10</div><div class="scope">Latest audit runs · first-party crawl</div></div>
+ <div class="card"><h3>Integration health</h3><div class="big" style="font-size:18px">1 needs attention</div><div class="scope">GA4 token expired · Contoso (demo)</div></div>
+</div>`,
+
+clients:()=>`
+<h2>Clients</h2><p class="sub">All clients in this tenant</p>
+<div class="row"><button class="primary" onclick="alert('Prototype: create-client form is built in Phase 1.')">New client</button>
+<label>Status <select aria-label="Filter by status"><option>All</option><option>Active</option><option>Onboarding</option></select></label></div>
+<div class="tablewrap"><table><thead><tr><th>Client</th><th>Primary domain</th><th>Status</th><th>Owner</th><th>Renewal</th></tr></thead><tbody>
+${D.clients.map(c=>`<tr><td><a href="#client/${c.id}">${c.name}</a></td><td>${c.domain} ${c.verified?'<span class="chip ok">verified</span>':'<span class="chip bad">unverified</span>'}</td><td>${c.status}</td><td>${c.owner}</td><td>${c.renewal}</td></tr>`).join("")}
+</tbody></table></div>`,
+
+client:(id)=>{const c=D.clients.find(x=>x.id===id); if(!c) return `<div class="empty">Client not found.</div>`; return `
+<h2>${c.name}</h2><p class="sub">${c.domain} · ${c.status}</p>
+<div class="grid">
+<div class="card"><h3>Brands</h3>${c.name.replace(" (demo)","")} <span class="chip">aliases: 2</span></div>
+<div class="card"><h3>Domains</h3>${c.domain} ${c.verified?'<span class="chip ok">verified</span>':'<span class="chip bad">unverified</span>'}</div>
+<div class="card"><h3>Competitors</h3>Competitor X (demo), Competitor Y (demo)</div>
+<div class="card"><h3>Markets</h3>US / en-US</div>
+</div>`},
+
+onboarding:()=>`
+<h2>Onboarding & domain verification</h2><p class="sub">Crawling is only allowed for verified domains.</p>
+<div class="tablewrap"><table><thead><tr><th>Domain</th><th>Method</th><th>Status</th><th></th></tr></thead><tbody>
+<tr><td>northwind.example</td><td>DNS TXT</td><td><span class="chip ok">Verified 2026-09-12</span></td><td></td></tr>
+<tr><td>contoso.example</td><td>HTML meta tag</td><td><span class="chip bad">Not verified</span></td><td><button onclick="alert('Prototype: verification check runs in Phase 2.')">Check now</button></td></tr>
+</tbody></table></div>
+<details open><summary>Verification instructions (DNS TXT)</summary><p>Add a TXT record to <code>contoso.example</code> with value <code>aisv-verify=&lt;token shown here&gt;</code>, then select “Check now”.</p></details>`,
+
+audit:()=>`
+<h2>Technical audit</h2><p class="sub">Crawl of northwind.example · 2026-11-10 · 340 URLs fetched · 22 skipped (robots 14, out of scope 6, too large 2) · <span class="chip acc">first-party crawl</span></p>
+<div class="row"><button class="primary" onclick="alert('Prototype: crawls run in Phase 2.')">Start crawl</button><button disabled title="No crawl running">Pause</button><button disabled title="No crawl running">Cancel</button></div>
+<div class="tablewrap"><table><thead><tr><th>Rule</th><th>Severity</th><th class="num">Affected</th><th class="num">Eligible</th><th class="num">Issue rate</th></tr></thead><tbody>
+${D.issues.map(i=>`<tr><td>${i.rule}</td><td><span class="chip ${i.sev==='High'?'bad':''}">${i.sev}</span></td><td class="num">${i.aff}</td><td class="num">${i.elig}</td><td class="num">${pct(i.aff,i.elig)}</td></tr>`).join("")}
+</tbody></table></div>
+<p class="note">Issue rate = affected eligible URLs ÷ eligible URLs for that rule. Eligibility differs per rule (e.g. JSON-LD rule only counts pages with JSON-LD).</p>`,
+
+integrations:()=>`
+<h2>Search integrations</h2><p class="sub">Official APIs where available; CSV import otherwise.</p>
+<div class="grid">
+<div class="card"><h3>Google Search Console</h3><span class="chip">Not connected</span><p><button disabled title="Available in Phase 3">Connect</button></p></div>
+<div class="card"><h3>Google Analytics 4</h3><span class="chip">Not connected</span><p><button disabled title="Available in Phase 3">Connect</button></p></div>
+<div class="card"><h3>CSV import</h3><span class="chip">customer_import</span><p><button disabled title="Available in Phase 3">Upload CSV</button></p></div>
+</div>`,
+
+visibility:()=>`
+<h2>AI visibility explorer</h2><p class="sub">Controlled prompt sample. Not representative of all users or all answers.</p>
+<p class="note">${scopeLine()}<br>Excluded: ${D.sample.excluded} runs (analyst-excluded, reasons recorded) · Failed: ${D.sample.failed} runs. Excluded and failed runs are not in the denominator.</p>
+<div class="grid">
+ <div class="card"><h3>Observed mention rate</h3><div class="big">${pct(...D.vis.mention)}</div><div class="scope">${D.vis.mention[0]} of ${D.vis.mention[1]} eligible runs</div></div>
+ <div class="card"><h3>Observed citation rate (owned domain)</h3><div class="big">${pct(...D.vis.citation)}</div><div class="scope">${D.vis.citation[0]} of ${D.vis.citation[1]} eligible runs</div></div>
+ <div class="card"><h3>Citation share within sample</h3><div class="big">${pct(...D.vis.share)}</div><div class="scope">${D.vis.share[0]} of ${D.vis.share[1]} qualifying citations</div></div>
+ <div class="card"><h3>Organic sessions</h3><div class="big" style="font-size:18px">No data</div><div class="scope">GA4 not connected</div></div>
+</div>
+<h3 style="margin-top:24px">Example observation</h3>
+<details><summary>“best payroll analytics tool for mid-size SaaS” · Provider A API (demo) · 2026-10-14</summary>
+<p><strong>Mentions:</strong> Northwind Analytics — <span class="chip">neutral</span> <span class="chip">exact match</span> <span class="chip acc">analyst-reviewed</span></p>
+<p><strong>Citations:</strong> northwind.example/features <span class="chip ok">owned</span>, review-site.example/payroll <span class="chip">third-party</span></p>
+<p><button onclick="alert('Prototype: analyst correction ships in Phase 4.')">Correct extraction</button></p></details>`,
+
+prompts:()=>`
+<h2>Prompt sets</h2><p class="sub">Versioned tracked prompts by topic, intent, funnel stage and persona.</p>
+<div class="tablewrap"><table><thead><tr><th>Set</th><th>Version</th><th class="num">Prompts</th><th>Market</th><th>Schedule</th><th>Providers</th></tr></thead><tbody>
+<tr><td>SaaS buyers (demo)</td><td>v3</td><td class="num">40</td><td>US / en-US</td><td>Weekly, 3 runs/prompt</td><td>Provider A, B (demo)</td></tr>
+</tbody></table></div>
+<button disabled title="Available in Phase 4">New prompt set</button>`,
+
+competitors:()=>`
+<h2>Competitor comparison</h2><p class="sub">Every row uses the identical eligible run set.</p>
+<p class="note">${scopeLine()}</p>
+<div class="tablewrap"><table><thead><tr><th>Brand</th><th class="num">Runs with mention</th><th class="num">Observed presence</th><th></th><th class="num">Runs with own-domain citation</th></tr></thead><tbody>
+${D.comp.map(c=>`<tr><td>${c.name}</td><td class="num">${c.m} / ${D.sample.n}</td><td class="num">${pct(c.m,D.sample.n)}</td><td><div class="bar" aria-hidden="true"><span style="width:${100*c.m/D.sample.n}%"></span></div></td><td class="num">${c.c} / ${D.sample.n}</td></tr>`).join("")}
+</tbody></table></div>
+<p class="note">This is presence within this sample only. It is not market share or universal share of voice.</p>`,
+
+tasks:()=>`
+<h2>Recommendations & tasks</h2><p class="sub">Each recommendation links to evidence and verification criteria.</p>
+<div class="kanban">${Object.entries(D.tasks).map(([k,v])=>`<div class="col"><h4>${k} (${v.length})</h4>${v.map(t=>`<div class="item">${t}</div>`).join("")}</div>`).join("")}</div>`,
+
+approvals:()=>`
+<h2>Approval center</h2><p class="sub">Consequential changes require a recorded human approval.</p>
+<div class="tablewrap"><table><thead><tr><th>Item</th><th>Requested by</th><th>Approver</th><th>Status</th><th></th></tr></thead><tbody>
+${D.approvals.map(a=>`<tr><td>${a.item}</td><td>${a.req}</td><td>${a.approver}</td><td><span class="chip">${a.status}</span></td><td><button onclick="alert('Prototype: approval decisions ship in Phase 5.')">Review</button></td></tr>`).join("")}
+</tbody></table></div>`,
+
+reports:()=>`
+<h2>Reports</h2><p class="sub">Monthly transparent reports with methodology and limitations.</p>
+<div class="tablewrap"><table><thead><tr><th>Period</th><th>Status</th><th>Sections</th><th></th></tr></thead><tbody>
+<tr><td>October 2026</td><td><span class="chip">Draft</span></td><td>Summary · Work completed · Technical findings · AI visibility sample · Competitors · Limitations & methodology · Next priorities</td><td><button disabled title="PDF export in Phase 5">Export PDF</button></td></tr>
+</tbody></table></div>`,
+
+providers:()=>`
+<h2>Providers</h2><p class="sub">Capability registry. A provider is unusable until terms are reviewed and a key is supplied.</p>
+<div class="tablewrap"><table><thead><tr><th>Provider</th><th>Access</th><th>Terms reviewed</th><th>Status</th></tr></thead><tbody>
+<tr><td>Google Search Console</td><td>Official API</td><td>—</td><td><span class="chip">Not enabled</span></td></tr>
+<tr><td>Google Analytics 4</td><td>Official API</td><td>—</td><td><span class="chip">Not enabled</span></td></tr>
+<tr><td>LLM API providers</td><td>Official API (key)</td><td>—</td><td><span class="chip">Not enabled</span></td></tr>
+<tr><td>Google AI Overviews</td><td>No official API — import only</td><td>—</td><td><span class="chip">Import only</span></td></tr>
+</tbody></table></div>`,
+
+members:()=>`
+<h2>Members & audit log</h2><p class="sub">Least-privilege roles; every change is logged.</p>
+<div class="tablewrap"><table><thead><tr><th>Member</th><th>Role</th><th>Scope</th><th>MFA</th></tr></thead><tbody>
+<tr><td>A. Rivera (demo)</td><td>Agency Owner</td><td>Tenant</td><td><span class="chip ok">On</span></td></tr>
+<tr><td>J. Chen (demo)</td><td>Account Manager</td><td>Northwind, Contoso</td><td><span class="chip ok">On</span></td></tr>
+<tr><td>M. Okafor (demo)</td><td>Content Editor</td><td>Northwind / Main project</td><td><span class="chip">Off</span></td></tr>
+<tr><td>Client Admin (demo)</td><td>Client Admin</td><td>Northwind portal</td><td><span class="chip">Off</span></td></tr>
+</tbody></table></div>
+<h3>Recent audit events</h3>
+<div class="tablewrap"><table><thead><tr><th>Time (UTC)</th><th>Actor</th><th>Action</th><th>Object</th></tr></thead><tbody>
+<tr><td>2026-11-10 14:02</td><td>J. Chen (demo)</td><td>crawl.started</td><td>northwind.example</td></tr>
+<tr><td>2026-11-09 09:41</td><td>A. Rivera (demo)</td><td>member.role_changed</td><td>M. Okafor (demo)</td></tr>
+</tbody></table></div>`
+};
+
+function route(){
+  const h=(location.hash||"#overview").slice(1);
+  const [k,arg]=h.split("/");
+  const fn=S[k]||S.overview;
+  renderNav(k==="client"?"clients":k);
+  const m=document.getElementById("main");
+  m.innerHTML=fn(arg);
+  m.focus({preventScroll:true});
+  document.getElementById("sidenav").classList.remove("open");
+  document.getElementById("menuBtn").setAttribute("aria-expanded","false");
+}
+window.addEventListener("hashchange",route);
+document.getElementById("menuBtn").addEventListener("click",e=>{
+  const n=document.getElementById("sidenav");const o=n.classList.toggle("open");e.currentTarget.setAttribute("aria-expanded",String(o));
+});
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+  r.dataset.theme=dark?"light":"dark";
+});
+route();
+</script>
+</body>
+</html>
