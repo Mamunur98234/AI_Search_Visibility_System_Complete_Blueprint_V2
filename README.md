@@ -2,8 +2,9 @@
 
 Multi-tenant AI Search Visibility Intelligence & Optimization platform for agencies and their clients.
 
-> **Status: Phase 0 (design).** No application code exists yet. Nothing described in `docs/` is
-> implemented unless a later phase report says so and links to passing tests.
+> **Status: Phase 1 (foundation) complete — awaiting approval for Phase 2.** Implemented: auth, MFA,
+> multi-tenancy with PostgreSQL row-level security, roles/permissions, members/invitations, client CRM,
+> audit log and the UI shell. See `docs/phase-1-report.md`. Everything else in `docs/` is design only.
 
 ## Core principle
 
@@ -11,7 +12,11 @@ Evidence before claims. Human approval before consequential changes. No fabricat
 guaranteed AI citations, rankings, traffic or revenue. Every number carries source, timestamp,
 method, scope, denominator and a confidence label.
 
-## Repository layout (current)
+## Quick start
+
+See [`docs/setup.md`](docs/setup.md) for local development, tests, Docker Compose deployment and backups.
+
+## Repository layout
 
 | Path | Contents |
 |---|---|
@@ -27,17 +32,13 @@ method, scope, denominator and a confidence label.
 | `docs/screen-map.md` | Dashboard screens, roles and states |
 | `docs/roadmap.md` | Phases, acceptance criteria, approval gates |
 | `docs/open-questions.md` | Decisions needed from the product owner |
-| `prototype/index.html` | Static clickable UI prototype — **demo fixtures only, no backend** |
-
-## Planned layout (Phase 1+)
-
-```
-apps/web      Next.js + TypeScript frontend
-apps/api      FastAPI modular monolith (/api/v1)
-apps/worker   Celery workers (crawl, imports, provider runs, reports)
-infra/        Docker Compose, deployment configs
-docs/         Architecture, methodology, runbooks
-```
+| `docs/setup.md` | Development, testing, deployment, backup/restore |
+| `docs/phase-1-report.md` | Phase 1 deliverables, test results, limitations |
+| `apps/api` | FastAPI API, Alembic migrations, tests, demo seed |
+| `apps/web` | Next.js web app, Playwright e2e tests |
+| `infra/` | PostgreSQL role bootstrap, Caddy config |
+| `docker-compose.yml` | Reference deployment |
+| `prototype/index.html` | Phase 0 static prototype — **demo fixtures only, no backend** |
 
 ## Viewing the prototype
 

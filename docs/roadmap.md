@@ -12,7 +12,10 @@ next plan. **Work stops until the product owner explicitly approves.**
 - [ ] **Owner:** design-partner interviews / workflow validation (cannot be done by the coding agent)
 - [ ] **Owner:** answers to `open-questions.md`
 
-## Phase 1 — Foundation
+## Phase 1 — Foundation ✅ (see phase-1-report.md)
+Delivered with these deviations from the planned scope: MinIO and the Celery worker move to Phase 2 (first
+real use); unit tests use pytest + Playwright (no vitest yet); CI secret scanning not yet added; access grants
+are per client (per-project grants later); 9 tenant roles + a platform-admin flag.
 Scope: monorepo scaffold, Docker Compose (postgres, redis, minio, api, worker, web), CI
 (ruff, mypy, pytest, eslint, tsc, vitest, Playwright, pip-audit, npm audit, secret scan);
 auth (login, logout, sessions, CSRF, password reset, invitations, optional TOTP MFA); tenants,

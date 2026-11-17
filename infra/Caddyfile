@@ -1,0 +1,7 @@
+# Edge proxy. Set SITE_ADDRESS to your domain (e.g. app.example.com) for automatic HTTPS.
+# Caddy replaces any client-supplied X-Forwarded-For with the real peer address.
+{$SITE_ADDRESS::8080} {
+	encode zstd gzip
+	reverse_proxy web:3000
+	header -Server
+}

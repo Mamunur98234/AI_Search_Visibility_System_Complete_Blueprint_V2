@@ -1,0 +1,97 @@
+# Reference deployment. Copy .env.example to .env and fill every value before `docker compose up`.
+name: aisv
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      AISV_OWNER_PASSWORD: ${AISV_OWNER_PASSWORD:?set in .env}
+      AISV_APP_PASSWORD: ${AISV_APP_PASSWORD:?set in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/init.sh:/docker-entrypoint-initdb.d/10-init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aisv"]
+      interval: 5s
+      retries: 20
+    networks: [backend]
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+    networks: [backend]
+
+  migrate:
+    build: ./apps/api
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      MIGRATION_DATABASE_URL: postgresql+psycopg://aisv_owner:${AISV_OWNER_PASSWORD}@postgres:5432/aisv
+      APP_ENV: ${APP_ENV:-development}
+      ENCRYPTION_KEYS: ${ENCRYPTION_KEYS:?set in .env}
+      REDIS_URL: redis://redis:6379/0
+      EMAIL_BACKEND: ${EMAIL_BACKEND:-console}
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [backend]
+
+  api:
+    build: ./apps/api
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+psycopg://aisv_app:${AISV_APP_PASSWORD}@postgres:5432/aisv
+      REDIS_URL: redis://redis:6379/0
+      ENCRYPTION_KEYS: ${ENCRYPTION_KEYS:?set in .env}
+      ALLOWED_ORIGINS: ${PUBLIC_WEB_URL:?set in .env}
+      PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:?set in .env}
+      ALLOW_SIGNUP: ${ALLOW_SIGNUP:-true}
+      EMAIL_BACKEND: ${EMAIL_BACKEND:-console}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-no-reply@localhost}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/api/v1/readyz')"]
+      interval: 10s
+      retries: 12
+    networks: [backend]   # not reachable from the edge network or the host
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        API_ORIGIN: http://api:8000
+    depends_on:
+      api: { condition: service_healthy }
+    networks: [backend, edge]
+
+  caddy:
+    image: caddy:2-alpine
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:8080}
+    ports:
+      - "${HTTP_PORT:-8080}:8080"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on: [web]
+    networks: [edge]
+
+networks:
+  backend:
+    internal: true
+  edge: {}
+
+volumes:
+  pgdata: {}
+  caddy_data: {}
