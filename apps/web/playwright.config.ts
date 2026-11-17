@@ -18,6 +18,9 @@ const API_ENV = {
   EMAIL_BACKEND: "file",
   EMAIL_FILE_DIR: "./var/e2e-outbox",
   LOGIN_RATE_LIMIT_PER_IP: "1000",
+  CRAWL_EXECUTION: "thread",
+  CRAWL_MIN_DELAY_MS: "0",
+  E2E_SITE_PORT: "8199",
 };
 
 export default defineConfig({
@@ -30,7 +33,8 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: [
     {
-      command: "../api/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8100",
+      // tests.e2e_server = app.main:app with crawler fetches routed to a local demo site (test-only module).
+      command: "../api/.venv/bin/uvicorn tests.e2e_server:app --host 127.0.0.1 --port 8100",
       cwd: "../api",
       url: "http://127.0.0.1:8100/api/v1/healthz",
       env: API_ENV,

@@ -15,7 +15,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const active = me.active_tenant;
 
-  const isCurrent = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const isCurrent = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href) || (href === "/domains" && pathname.startsWith("/crawls"));
 
   return (
     <>

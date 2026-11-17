@@ -150,6 +150,54 @@
         "title": "AuditLogOut",
         "type": "object"
       },
+      "AuditSummaryOut": {
+        "properties": {
+          "audit_run_id": {
+            "format": "uuid",
+            "title": "Audit Run Id",
+            "type": "string"
+          },
+          "crawl_id": {
+            "format": "uuid",
+            "title": "Crawl Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "pages_fetched": {
+            "title": "Pages Fetched",
+            "type": "integer"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/RuleResultOut"
+            },
+            "title": "Rules",
+            "type": "array"
+          },
+          "ruleset_version": {
+            "title": "Ruleset Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "audit_run_id",
+          "crawl_id",
+          "ruleset_version",
+          "pages_fetched",
+          "created_at",
+          "rules",
+          "provenance"
+        ],
+        "title": "AuditSummaryOut",
+        "type": "object"
+      },
       "BrandIn": {
         "properties": {
           "aliases": {
@@ -908,6 +956,741 @@
         "title": "ContactUpdate",
         "type": "object"
       },
+      "CrawlDetailOut": {
+        "properties": {
+          "base_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Url"
+          },
+          "client_id": {
+            "format": "uuid",
+            "title": "Client Id",
+            "type": "string"
+          },
+          "crawl_delay_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crawl Delay S"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "delay_ms": {
+            "title": "Delay Ms",
+            "type": "integer"
+          },
+          "domain_id": {
+            "format": "uuid",
+            "title": "Domain Id",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "max_depth": {
+            "title": "Max Depth",
+            "type": "integer"
+          },
+          "max_pages": {
+            "title": "Max Pages",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "pages_errored": {
+            "title": "Pages Errored",
+            "type": "integer"
+          },
+          "pages_fetched": {
+            "title": "Pages Fetched",
+            "type": "integer"
+          },
+          "pages_skipped": {
+            "title": "Pages Skipped",
+            "type": "integer"
+          },
+          "requested_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requested Action"
+          },
+          "robots_outcome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Robots Outcome"
+          },
+          "robots_status": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Robots Status"
+          },
+          "robots_txt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Robots Txt"
+          },
+          "sitemap_urls_found": {
+            "title": "Sitemap Urls Found",
+            "type": "integer"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "state_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "State Counts",
+            "type": "object"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "urls_discovered": {
+            "title": "Urls Discovered",
+            "type": "integer"
+          },
+          "urls_dropped": {
+            "title": "Urls Dropped",
+            "type": "integer"
+          },
+          "user_agent": {
+            "title": "User Agent",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "client_id",
+          "domain_id",
+          "hostname",
+          "status",
+          "requested_action",
+          "max_pages",
+          "max_depth",
+          "delay_ms",
+          "base_url",
+          "user_agent",
+          "robots_outcome",
+          "robots_status",
+          "crawl_delay_s",
+          "sitemap_urls_found",
+          "pages_fetched",
+          "pages_skipped",
+          "pages_errored",
+          "urls_discovered",
+          "urls_dropped",
+          "note",
+          "error",
+          "created_at",
+          "started_at",
+          "finished_at"
+        ],
+        "title": "CrawlDetailOut",
+        "type": "object"
+      },
+      "CrawlIn": {
+        "properties": {
+          "delay_ms": {
+            "default": 1000,
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Delay Ms",
+            "type": "integer"
+          },
+          "max_depth": {
+            "default": 5,
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Max Depth",
+            "type": "integer"
+          },
+          "max_pages": {
+            "default": 200,
+            "maximum": 5000.0,
+            "minimum": 1.0,
+            "title": "Max Pages",
+            "type": "integer"
+          }
+        },
+        "title": "CrawlIn",
+        "type": "object"
+      },
+      "CrawlOut": {
+        "properties": {
+          "base_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Url"
+          },
+          "client_id": {
+            "format": "uuid",
+            "title": "Client Id",
+            "type": "string"
+          },
+          "crawl_delay_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crawl Delay S"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "delay_ms": {
+            "title": "Delay Ms",
+            "type": "integer"
+          },
+          "domain_id": {
+            "format": "uuid",
+            "title": "Domain Id",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "max_depth": {
+            "title": "Max Depth",
+            "type": "integer"
+          },
+          "max_pages": {
+            "title": "Max Pages",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "pages_errored": {
+            "title": "Pages Errored",
+            "type": "integer"
+          },
+          "pages_fetched": {
+            "title": "Pages Fetched",
+            "type": "integer"
+          },
+          "pages_skipped": {
+            "title": "Pages Skipped",
+            "type": "integer"
+          },
+          "requested_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requested Action"
+          },
+          "robots_outcome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Robots Outcome"
+          },
+          "robots_status": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Robots Status"
+          },
+          "sitemap_urls_found": {
+            "title": "Sitemap Urls Found",
+            "type": "integer"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "urls_discovered": {
+            "title": "Urls Discovered",
+            "type": "integer"
+          },
+          "urls_dropped": {
+            "title": "Urls Dropped",
+            "type": "integer"
+          },
+          "user_agent": {
+            "title": "User Agent",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "client_id",
+          "domain_id",
+          "hostname",
+          "status",
+          "requested_action",
+          "max_pages",
+          "max_depth",
+          "delay_ms",
+          "base_url",
+          "user_agent",
+          "robots_outcome",
+          "robots_status",
+          "crawl_delay_s",
+          "sitemap_urls_found",
+          "pages_fetched",
+          "pages_skipped",
+          "pages_errored",
+          "urls_discovered",
+          "urls_dropped",
+          "note",
+          "error",
+          "created_at",
+          "started_at",
+          "finished_at"
+        ],
+        "title": "CrawlOut",
+        "type": "object"
+      },
+      "CrawlPageOut": {
+        "properties": {
+          "bytes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bytes"
+          },
+          "canonical": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical"
+          },
+          "content_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content Type"
+          },
+          "depth": {
+            "title": "Depth",
+            "type": "integer"
+          },
+          "error_detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Detail"
+          },
+          "fetch_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetch Ms"
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fetched At"
+          },
+          "final_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Url"
+          },
+          "h1": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "H1"
+          },
+          "h2_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "H2 Count"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_indexable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Indexable"
+          },
+          "jsonld": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jsonld"
+          },
+          "lang": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lang"
+          },
+          "meta_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta Description"
+          },
+          "meta_robots": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta Robots"
+          },
+          "redirect_chain": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Redirect Chain"
+          },
+          "skip_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skip Reason"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "status_code": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status Code"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "word_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Word Count"
+          },
+          "x_robots_tag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X Robots Tag"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "depth",
+          "source",
+          "state",
+          "skip_reason",
+          "error_detail",
+          "status_code",
+          "final_url",
+          "redirect_chain",
+          "content_type",
+          "bytes",
+          "fetch_ms",
+          "fetched_at",
+          "title",
+          "meta_description",
+          "meta_robots",
+          "x_robots_tag",
+          "canonical",
+          "h1",
+          "h2_count",
+          "lang",
+          "word_count",
+          "jsonld",
+          "is_indexable"
+        ],
+        "title": "CrawlPageOut",
+        "type": "object"
+      },
       "DomainIn": {
         "properties": {
           "hostname": {
@@ -924,6 +1707,97 @@
           "hostname"
         ],
         "title": "DomainIn",
+        "type": "object"
+      },
+      "DomainListOut": {
+        "properties": {
+          "client_id": {
+            "format": "uuid",
+            "title": "Client Id",
+            "type": "string"
+          },
+          "client_name": {
+            "title": "Client Name",
+            "type": "string"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_primary": {
+            "title": "Is Primary",
+            "type": "boolean"
+          },
+          "last_crawl_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Crawl At"
+          },
+          "last_crawl_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Crawl Id"
+          },
+          "last_crawl_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Crawl Status"
+          },
+          "verification_status": {
+            "title": "Verification Status",
+            "type": "string"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          }
+        },
+        "required": [
+          "id",
+          "client_id",
+          "client_name",
+          "hostname",
+          "is_primary",
+          "verification_status",
+          "verified_at",
+          "last_crawl_id",
+          "last_crawl_status",
+          "last_crawl_at"
+        ],
+        "title": "DomainListOut",
         "type": "object"
       },
       "DomainOut": {
@@ -1160,6 +2034,101 @@
           "role"
         ],
         "title": "InviteIn",
+        "type": "object"
+      },
+      "IssueOut": {
+        "properties": {
+          "crawl_page_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crawl Page Id"
+          },
+          "evidence": {
+            "additionalProperties": true,
+            "title": "Evidence",
+            "type": "object"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "rule_key": {
+            "title": "Rule Key",
+            "type": "string"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "status_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status Note"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "rule_key",
+          "severity",
+          "url",
+          "crawl_page_id",
+          "evidence",
+          "status",
+          "status_note"
+        ],
+        "title": "IssueOut",
+        "type": "object"
+      },
+      "IssueUpdate": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "accepted",
+              "wont_fix"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "IssueUpdate",
         "type": "object"
       },
       "LanguageOut": {
@@ -1566,6 +2535,62 @@
         "title": "Page[ClientOut]",
         "type": "object"
       },
+      "Page_CrawlPageOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CrawlPageOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "Page[CrawlPageOut]",
+        "type": "object"
+      },
+      "Page_IssueOut_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/IssueOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "Page[IssueOut]",
+        "type": "object"
+      },
       "PermissionOut": {
         "properties": {
           "description": {
@@ -1842,6 +2867,73 @@
         "title": "ProjectUpdate",
         "type": "object"
       },
+      "Provenance": {
+        "properties": {
+          "collected_from": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected From"
+          },
+          "collected_to": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Collected To"
+          },
+          "confidence_label": {
+            "title": "Confidence Label",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "sample_size": {
+            "title": "Sample Size",
+            "type": "integer"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "method",
+          "scope",
+          "collected_from",
+          "collected_to",
+          "confidence_label",
+          "sample_size",
+          "limitations"
+        ],
+        "title": "Provenance",
+        "type": "object"
+      },
       "RecoveryCodesOut": {
         "properties": {
           "recovery_codes": {
@@ -1909,6 +3001,94 @@
           "permissions"
         ],
         "title": "RoleOut",
+        "type": "object"
+      },
+      "RuleOut": {
+        "properties": {
+          "eligible_definition": {
+            "title": "Eligible Definition",
+            "type": "string"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "why": {
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "title",
+          "severity",
+          "eligible_definition",
+          "why"
+        ],
+        "title": "RuleOut",
+        "type": "object"
+      },
+      "RuleResultOut": {
+        "properties": {
+          "affected_count": {
+            "title": "Affected Count",
+            "type": "integer"
+          },
+          "eligible_count": {
+            "title": "Eligible Count",
+            "type": "integer"
+          },
+          "eligible_definition": {
+            "title": "Eligible Definition",
+            "type": "string"
+          },
+          "key": {
+            "title": "Key",
+            "type": "string"
+          },
+          "rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "why": {
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "title",
+          "severity",
+          "eligible_definition",
+          "why",
+          "eligible_count",
+          "affected_count",
+          "rate"
+        ],
+        "title": "RuleResultOut",
         "type": "object"
       },
       "SignupIn": {
@@ -2073,6 +3253,113 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "VerificationOut": {
+        "properties": {
+          "checked_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked At"
+          },
+          "domain_id": {
+            "format": "uuid",
+            "title": "Domain Id",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "hostname": {
+            "title": "Hostname",
+            "type": "string"
+          },
+          "instructions": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructions"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          }
+        },
+        "required": [
+          "domain_id",
+          "hostname",
+          "status",
+          "method",
+          "instructions",
+          "checked_at",
+          "verified_at",
+          "error"
+        ],
+        "title": "VerificationOut",
+        "type": "object"
+      },
+      "VerificationStartIn": {
+        "properties": {
+          "method": {
+            "enum": [
+              "dns_txt",
+              "meta_tag",
+              "well_known"
+            ],
+            "title": "Method",
+            "type": "string"
+          }
+        },
+        "required": [
+          "method"
+        ],
+        "title": "VerificationStartIn",
+        "type": "object"
       }
     }
   },
@@ -2209,6 +3496,32 @@
         "summary": "Audit Log",
         "tags": [
           "tenancy"
+        ]
+      }
+    },
+    "/api/v1/audit-rules": {
+      "get": {
+        "description": "Methodology: every rule, its denominator and rationale (ruleset version in the header).",
+        "operationId": "audit_rules_api_v1_audit_rules_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RuleOut"
+                  },
+                  "title": "Response Audit Rules Api V1 Audit Rules Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Audit Rules",
+        "tags": [
+          "crawl"
         ]
       }
     },
@@ -3034,6 +4347,53 @@
         ]
       }
     },
+    "/api/v1/clients/{client_id}/crawls": {
+      "get": {
+        "operationId": "list_crawls_api_v1_clients__client_id__crawls_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "client_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Client Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CrawlOut"
+                  },
+                  "title": "Response List Crawls Api V1 Clients  Client Id  Crawls Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Crawls",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
     "/api/v1/clients/{client_id}/notes": {
       "get": {
         "operationId": "list_notes_api_v1_clients__client_id__notes_get",
@@ -3796,6 +5156,677 @@
         ]
       }
     },
+    "/api/v1/crawls/{crawl_id}": {
+      "get": {
+        "operationId": "read_crawl_api_v1_crawls__crawl_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlDetailOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read Crawl",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/crawls/{crawl_id}/audit": {
+      "get": {
+        "operationId": "audit_summary_api_v1_crawls__crawl_id__audit_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditSummaryOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Audit Summary",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/crawls/{crawl_id}/cancel": {
+      "post": {
+        "operationId": "cancel_crawl_api_v1_crawls__crawl_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Crawl",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/crawls/{crawl_id}/issues": {
+      "get": {
+        "operationId": "crawl_issues_api_v1_crawls__crawl_id__issues_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "rule",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(open|accepted|wont_fix)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_IssueOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Crawl Issues",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/crawls/{crawl_id}/pages": {
+      "get": {
+        "operationId": "crawl_pages_api_v1_crawls__crawl_id__pages_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(queued|fetched|skipped|error)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_CrawlPageOut_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Crawl Pages",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/crawls/{crawl_id}/pause": {
+      "post": {
+        "operationId": "pause_crawl_api_v1_crawls__crawl_id__pause_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Pause Crawl",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/crawls/{crawl_id}/resume": {
+      "post": {
+        "operationId": "resume_crawl_api_v1_crawls__crawl_id__resume_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "crawl_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Crawl Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resume Crawl",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/domains": {
+      "get": {
+        "operationId": "list_domains_api_v1_domains_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(unverified|pending|verified|failed)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DomainListOut"
+                  },
+                  "title": "Response List Domains Api V1 Domains Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Domains",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/domains/{domain_id}/crawls": {
+      "post": {
+        "operationId": "start_crawl_api_v1_domains__domain_id__crawls_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Domain Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrawlIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CrawlOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Crawl",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/domains/{domain_id}/verification": {
+      "get": {
+        "operationId": "get_verification_api_v1_domains__domain_id__verification_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Domain Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Verification",
+        "tags": [
+          "crawl"
+        ]
+      },
+      "post": {
+        "operationId": "start_verification_api_v1_domains__domain_id__verification_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Domain Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationStartIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Verification",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
+    "/api/v1/domains/{domain_id}/verification/check": {
+      "post": {
+        "operationId": "check_verification_api_v1_domains__domain_id__verification_check_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "domain_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Domain Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Check Verification",
+        "tags": [
+          "crawl"
+        ]
+      }
+    },
     "/api/v1/domains/{item_id}": {
       "delete": {
         "operationId": "delete_domain_api_v1_domains__item_id__delete",
@@ -4065,6 +6096,59 @@
         "summary": "Revoke Invitation",
         "tags": [
           "tenancy"
+        ]
+      }
+    },
+    "/api/v1/issues/{issue_id}": {
+      "patch": {
+        "operationId": "update_issue_api_v1_issues__issue_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "issue_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Issue Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IssueUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssueOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Issue",
+        "tags": [
+          "crawl"
         ]
       }
     },

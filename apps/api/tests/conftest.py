@@ -17,6 +17,8 @@ os.environ["REDIS_URL"] = ""
 os.environ.setdefault("ENCRYPTION_KEYS", Fernet.generate_key().decode())
 os.environ["ALLOWED_ORIGINS"] = "http://testserver"
 os.environ["ALLOW_SIGNUP"] = "true"
+os.environ["CRAWL_EXECUTION"] = "sync"
+os.environ["CRAWL_MIN_DELAY_MS"] = "0"
 
 import logging  # noqa: E402
 
@@ -30,6 +32,7 @@ from app.core import ratelimit  # noqa: E402
 from app.core.config import get_settings  # noqa: E402
 from app.main import app  # noqa: E402
 from app.services.email import MEMORY_OUTBOX  # noqa: E402
+from tests.site import TestFetcher, TestSite, build_demo_site  # noqa: E402
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -54,12 +57,42 @@ def owner_engine() -> Any:
 def _clean(owner_engine: Any) -> Iterator[None]:
     with owner_engine.begin() as c:
         c.execute(text(
-            "TRUNCATE notes, competitors, project_markets, projects, domains, brands, contacts, access_grants, "
+            "TRUNCATE crawl_issues, audit_rule_results, audit_runs, crawl_links, sitemap_entries, crawl_pages, "
+            "crawl_jobs, notes, competitors, project_markets, projects, domains, brands, contacts, access_grants, "
             "clients, invitations, audit_log, memberships, sessions, password_reset_tokens, access_events, "
             "users, tenants CASCADE"))
     ratelimit.set_backend(None)
     MEMORY_OUTBOX.clear()
     yield
+
+
+@pytest.fixture(scope="session")
+def site() -> Iterator[TestSite]:
+    s = TestSite()
+    build_demo_site(s)
+    yield s
+    s.close()
+
+
+@pytest.fixture(autouse=True)
+def use_site(monkeypatch: pytest.MonkeyPatch, site: TestSite) -> TestSite:
+    """All crawler/verification fetches go through TestFetcher (production IP policy, local socket target)."""
+    import app.crawl.crawler as crawler_mod
+    import app.routers.crawl as crawl_router
+
+    def factory(ua: str) -> TestFetcher:
+        return TestFetcher(ua, site)
+
+    monkeypatch.setattr(crawler_mod, "make_fetcher", factory)
+    monkeypatch.setattr(crawl_router, "make_fetcher", factory)
+    return site
+
+
+def verify_domain_directly(owner_engine: Any, tenant_id: str, domain_id: str) -> None:
+    with owner_engine.begin() as c:
+        c.execute(text("SELECT set_config('app.tenant_id', :t, true)"), {"t": tenant_id})
+        c.execute(text("UPDATE domains SET verification_status='verified', verified_at=now(), "
+                       "verification_method='dns_txt' WHERE id = :d"), {"d": domain_id})
 
 
 class Api:
@@ -129,6 +162,8 @@ class World:
     note_id: str
     member_id: str  # a non-owner member
     invitation_id: str
+    crawl_id: str
+    issue_id: str
 
 
 def build_world(prefix: str) -> World:
@@ -147,9 +182,15 @@ def build_world(prefix: str) -> World:
     members = owner.get("/members").json()
     member_id = next(m["id"] for m in members if m["role"] == "seo_analyst")
     inv = owner.post("/members/invite", {"email": f"pending@{prefix}.example", "role": "auditor"}).json()
-    return World(owner=owner, tenant_id=me["active_tenant"]["id"], client_id=cid, contact_id=contact["id"],
+    tenant_id = me["active_tenant"]["id"]
+    verify_domain_directly(create_engine(get_settings().migration_database_url), tenant_id, domain["id"])
+    crawl = owner.post(f"/domains/{domain['id']}/crawls", {"max_pages": 20, "delay_ms": 0}).json()
+    assert crawl["status"] == "queued" or crawl["status"] == "completed", crawl
+    issues = owner.get(f"/crawls/{crawl['id']}/issues?limit=1").json()["items"]
+    return World(owner=owner, tenant_id=tenant_id, client_id=cid, contact_id=contact["id"],
                  brand_id=brand["id"], domain_id=domain["id"], project_id=project["id"], competitor_id=comp["id"],
-                 pm_id=pm["id"], note_id=note["id"], member_id=member_id, invitation_id=inv["id"])
+                 pm_id=pm["id"], note_id=note["id"], member_id=member_id, invitation_id=inv["id"],
+                 crawl_id=crawl["id"], issue_id=issues[0]["id"])
 
 
 # Path-parameter resolution for route-enumerating tests.
@@ -164,7 +205,8 @@ def path_values(w: World, path: str) -> dict[str, str]:
             "competitors": w.competitor_id,
         }[seg[1]]
     for key, val in {"client_id": w.client_id, "project_id": w.project_id, "member_id": w.member_id,
-                     "invitation_id": w.invitation_id, "pm_id": w.pm_id, "note_id": w.note_id}.items():
+                     "invitation_id": w.invitation_id, "pm_id": w.pm_id, "note_id": w.note_id,
+                     "domain_id": w.domain_id, "crawl_id": w.crawl_id, "issue_id": w.issue_id}.items():
         if f"{{{key}}}" in path:
             v[key] = val
     return v
@@ -182,6 +224,9 @@ SAMPLE_BODIES: dict[str, Any] = {
     "MemberUpdate": {"status": "active"},
     "InviteIn": {"email": "someone-new@other.example", "role": "auditor"},
     "TenantUpdate": {"name": "Renamed"},
+    "VerificationStartIn": {"method": "dns_txt"},
+    "CrawlIn": {"max_pages": 3, "delay_ms": 0},
+    "IssueUpdate": {"status": "accepted", "note": "triaged"},
 }
 
 

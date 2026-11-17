@@ -77,7 +77,7 @@ export default function OverviewPage() {
               <Link href="/settings/security">Turn on two-factor authentication</Link>
             </li>
             <li>
-              <Badge>Phase 2</Badge> Verify domains and run a technical audit
+              <Badge>Next</Badge> <Link href="/domains">Verify a domain and run a technical audit</Link>
             </li>
           </ul>
         </section>

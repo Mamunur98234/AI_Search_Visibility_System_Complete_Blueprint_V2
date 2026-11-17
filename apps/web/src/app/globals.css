@@ -135,3 +135,7 @@ code.secret { font-size: 1rem; letter-spacing: 0.05em; overflow-wrap: anywhere; 
 .between { justify-content: space-between; align-items: flex-start; flex-wrap: nowrap; }
 .grow { flex: 1; min-width: 0; }
 .section-gap { margin-top: 28px; }
+.contents { display: contents; }
+.break { overflow-wrap: anywhere; word-break: break-word; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.list-tight { margin: 0; padding-left: 18px; }

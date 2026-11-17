@@ -12,25 +12,33 @@ export type Resource<T> = {
   setData: (d: T) => void;
 };
 
-/** Minimal GET hook with explicit loading / error / data states. `path === null` skips the request. */
+/**
+ * Minimal GET hook with explicit loading / error / data states. `path === null` skips the request.
+ * `loading` is true until a response for the CURRENT path has arrived, so a path change can never
+ * produce a render with loading=false and no data (which callers would treat as loaded).
+ */
 export function useApi<T>(path: string | null): Resource<T> {
-  const [data, setData] = useState<T>();
+  const [data, setDataState] = useState<T>();
   const [error, setError] = useState<ApiError | Error>();
-  const [loading, setLoading] = useState<boolean>(path !== null);
+  const [inFlight, setInFlight] = useState(false);
+  const [settledPath, setSettledPath] = useState<string | null>(null);
   const seq = useRef(0);
 
   const load = useCallback(async () => {
     if (path === null) return;
     const id = ++seq.current;
-    setLoading(true);
+    setInFlight(true);
     setError(undefined);
     try {
       const d = await api<T>("GET", path);
-      if (id === seq.current) setData(d);
+      if (id === seq.current) setDataState(d);
     } catch (e) {
       if (id === seq.current) setError(e as Error);
     } finally {
-      if (id === seq.current) setLoading(false);
+      if (id === seq.current) {
+        setInFlight(false);
+        setSettledPath(path);
+      }
     }
   }, [path]);
 
@@ -39,5 +47,7 @@ export function useApi<T>(path: string | null): Resource<T> {
     void load();
   }, [load]);
 
+  const setData = useCallback((d: T) => setDataState(d), []);
+  const loading = path !== null && (inFlight || settledPath !== path);
   return { data, error, loading, reload: load, setData };
 }

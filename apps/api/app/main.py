@@ -8,12 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.errors import install_error_handlers, problem
 from app.core.security import constant_time_equals
-from app.routers import auth, crm, reference, tenancy
+from app.routers import auth, crawl, crm, reference, tenancy
 
 API_PREFIX = "/api/v1"
 UNSAFE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
 # Every API router. tests/test_route_permissions.py walks these to enforce access declarations.
-ROUTERS = [reference.health_router, auth.router, tenancy.router, crm.router, reference.router]
+ROUTERS = [reference.health_router, auth.router, tenancy.router, crm.router, crawl.router, reference.router]
 
 logging.basicConfig(level=logging.INFO, format='{"level":"%(levelname)s","logger":"%(name)s","msg":"%(message)s"}')
 

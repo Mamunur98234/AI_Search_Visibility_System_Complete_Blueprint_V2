@@ -2,9 +2,10 @@
 
 Multi-tenant AI Search Visibility Intelligence & Optimization platform for agencies and their clients.
 
-> **Status: Phase 1 (foundation) complete — awaiting approval for Phase 2.** Implemented: auth, MFA,
-> multi-tenancy with PostgreSQL row-level security, roles/permissions, members/invitations, client CRM,
-> audit log and the UI shell. See `docs/phase-1-report.md`. Everything else in `docs/` is design only.
+> **Status: Phase 2 complete — awaiting approval for Phase 3.** Implemented: auth, MFA, multi-tenancy with
+> PostgreSQL row-level security, roles, members, client CRM, audit log, UI shell (Phase 1); domain verification,
+> SSRF-safe crawler with Celery worker, and evidence-backed technical SEO audit (Phase 2). See
+> `docs/phase-1-report.md` and `docs/phase-2-report.md`. Everything else in `docs/` is design only.
 
 ## Core principle
 
@@ -34,6 +35,8 @@ See [`docs/setup.md`](docs/setup.md) for local development, tests, Docker Compos
 | `docs/open-questions.md` | Decisions needed from the product owner |
 | `docs/setup.md` | Development, testing, deployment, backup/restore |
 | `docs/phase-1-report.md` | Phase 1 deliverables, test results, limitations |
+| `docs/phase-2-report.md` | Phase 2 deliverables, test results, limitations |
+| `docs/crawler-methodology.md` | Crawl scope, robots handling, SSRF controls, audit rules and denominators |
 | `apps/api` | FastAPI API, Alembic migrations, tests, demo seed |
 | `apps/web` | Next.js web app, Playwright e2e tests |
 | `infra/` | PostgreSQL role bootstrap, Caddy config |

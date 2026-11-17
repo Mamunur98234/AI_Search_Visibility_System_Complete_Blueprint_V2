@@ -12,7 +12,7 @@ from tests.conftest import World, build_world, invite_and_join, path_values, sam
 AUTHENTICATED_ONLY = {
     "GET /auth/me", "POST /auth/logout", "POST /auth/switch-tenant", "POST /auth/password/change",
     "POST /auth/mfa/setup", "POST /auth/mfa/enable", "POST /auth/mfa/disable", "POST /auth/mfa/verify-login",
-    "GET /reference/markets", "GET /reference/languages",
+    "GET /reference/markets", "GET /reference/languages", "GET /audit-rules",
 }
 PUBLIC = {
     "GET /healthz", "GET /readyz", "GET /auth/csrf", "POST /auth/signup", "POST /auth/login",
@@ -145,6 +145,21 @@ EXPECTED_ACCESS = {
     "DELETE /notes/{note_id}": "note.manage",
     "GET /reference/markets": "authenticated",
     "GET /reference/languages": "authenticated",
+    "GET /domains": "client.read",
+    "GET /domains/{domain_id}/verification": "client.read",
+    "POST /domains/{domain_id}/verification": "domain.verify",
+    "POST /domains/{domain_id}/verification/check": "domain.verify",
+    "POST /domains/{domain_id}/crawls": "crawl.run",
+    "GET /clients/{client_id}/crawls": "client.read",
+    "GET /crawls/{crawl_id}": "client.read",
+    "POST /crawls/{crawl_id}/pause": "crawl.run",
+    "POST /crawls/{crawl_id}/resume": "crawl.run",
+    "POST /crawls/{crawl_id}/cancel": "crawl.run",
+    "GET /crawls/{crawl_id}/pages": "client.read",
+    "GET /crawls/{crawl_id}/audit": "client.read",
+    "GET /crawls/{crawl_id}/issues": "client.read",
+    "PATCH /issues/{issue_id}": "issue.manage",
+    "GET /audit-rules": "authenticated",
 }
 
 

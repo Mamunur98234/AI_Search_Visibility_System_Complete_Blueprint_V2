@@ -23,6 +23,7 @@ from app.models import (
     Client,
     Competitor,
     Contact,
+    CrawlJob,
     Domain,
     Language,
     Market,
@@ -242,6 +243,9 @@ def register_children(
     def delete_item(item_id: uuid.UUID, request: Request, db: Session = Depends(get_db),
                     ctx: TenantContext = Depends(require(manage_perm))) -> Response:
         obj = _get(db, ctx, item_id)
+        if model is Domain and db.scalar(select(CrawlJob.id).where(CrawlJob.tenant_id == ctx.tenant_id,
+                                                                   CrawlJob.domain_id == obj.id).limit(1)):
+            raise HTTPException(409, "This domain has crawl history and cannot be deleted (evidence is retained)")
         snap = _snapshot(obj, fields)
         cid = _client_id_of(db, obj)
         db.delete(obj)

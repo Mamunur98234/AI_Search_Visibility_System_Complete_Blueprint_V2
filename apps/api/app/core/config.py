@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     smtp_password: str = ""
     smtp_from: str = "no-reply@localhost"
 
+    # Crawling. "celery" (Redis worker) is required in production; "thread" runs in-process for local dev;
+    # "sync" runs inline and exists for automated tests.
+    crawl_execution: Literal["celery", "thread", "sync"] = "celery"
+    crawl_min_delay_ms: int = 1000
+    crawl_max_pages_limit: int = 2000
+
     session_idle_minutes: int = 12 * 60
     session_absolute_hours: int = 7 * 24
     invitation_ttl_hours: int = 72
@@ -41,6 +47,10 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.app_env == "production"
+
+    @property
+    def crawler_user_agent(self) -> str:
+        return f"Mozilla/5.0 (compatible; AISVBot/0.2; +{self.public_web_url.rstrip('/')}/bot)"
 
     @property
     def origins(self) -> list[str]:
@@ -65,5 +75,7 @@ def get_settings() -> Settings:
         if s.email_backend in ("console", "file", "memory"):
             raise RuntimeError("EMAIL_BACKEND must be smtp in production")
         if not s.redis_url:
-            raise RuntimeError("REDIS_URL must be set in production (rate limiting)")
+            raise RuntimeError("REDIS_URL must be set in production (rate limiting, crawl queue)")
+        if s.crawl_execution != "celery":
+            raise RuntimeError("CRAWL_EXECUTION must be celery in production")
     return s

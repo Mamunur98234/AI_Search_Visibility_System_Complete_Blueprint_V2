@@ -88,9 +88,17 @@ class Domain(IdMixin, TimestampMixin, TenantMixin, Base):
     # Verification workflow arrives in Phase 2; until then every domain is 'unverified'.
     verification_status: Mapped[str] = mapped_column(String(20), nullable=False, default="unverified")
     verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    verification_method: Mapped[str | None] = mapped_column(String(20))
+    # Public proof value the customer publishes on their domain. Not a credential.
+    verification_token: Mapped[str | None] = mapped_column(String(64))
+    verification_checked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    verification_error: Mapped[str | None] = mapped_column(String(500))
     __table_args__ = (
         _parent_fk("client_id", "clients"),
+        UniqueConstraint("tenant_id", "id", name="uq_domains_tenant_id_id"),
         UniqueConstraint("tenant_id", "hostname"),
+        CheckConstraint("verification_method IS NULL OR verification_method IN ('dns_txt','meta_tag','well_known')",
+                        name="verification_method"),
         CheckConstraint("verification_status IN ('unverified','pending','verified','failed')",
                         name="verification_status"),
         Index("ix_domains_tenant_client", "tenant_id", "client_id"),

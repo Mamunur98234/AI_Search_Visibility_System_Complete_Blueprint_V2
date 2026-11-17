@@ -142,7 +142,8 @@ export default function ClientDetailPage() {
               ]}
               render={(x) => (
                 <>
-                  <strong>{x.hostname}</strong> {x.is_primary ? <Badge tone="info">Primary</Badge> : null}{" "}
+                  <Link href={`/domains/${x.id}`}><strong>{x.hostname}</strong></Link>{" "}
+                  {x.is_primary ? <Badge tone="info">Primary</Badge> : null}{" "}
                   <Badge tone={x.verification_status === "verified" ? "ok" : "neutral"}>{x.verification_status}</Badge>
                 </>
               )}

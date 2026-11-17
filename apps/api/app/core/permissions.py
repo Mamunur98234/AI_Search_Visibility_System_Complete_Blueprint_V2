@@ -27,6 +27,9 @@ class Perm(StrEnum):
     COMPETITOR_MANAGE = "competitor.manage"
     NOTE_READ = "note.read"
     NOTE_MANAGE = "note.manage"
+    DOMAIN_VERIFY = "domain.verify"
+    CRAWL_RUN = "crawl.run"
+    ISSUE_MANAGE = "issue.manage"
 
 
 PERMISSION_DESCRIPTIONS: dict[Perm, str] = {
@@ -48,6 +51,9 @@ PERMISSION_DESCRIPTIONS: dict[Perm, str] = {
     Perm.COMPETITOR_MANAGE: "Create, edit and delete competitors",
     Perm.NOTE_READ: "View internal notes",
     Perm.NOTE_MANAGE: "Create and delete internal notes",
+    Perm.DOMAIN_VERIFY: "Start and check domain ownership verification",
+    Perm.CRAWL_RUN: "Start, pause, resume and cancel crawls of verified domains",
+    Perm.ISSUE_MANAGE: "Triage technical audit findings (accept / won't fix / reopen)",
 }
 
 Scope = Literal["tenant", "granted"]
@@ -63,12 +69,14 @@ ROLES: dict[str, dict[str, object]] = {
     "agency_admin": {"name": "Agency Admin", "scope": "tenant", "perms": ALL},
     "account_manager": {
         "name": "Account Manager", "scope": "granted",
-        "perms": frozenset(_CRM_EDIT | {Perm.CLIENT_CREATE, Perm.MEMBER_READ}),
+        "perms": frozenset(_CRM_EDIT | {Perm.CLIENT_CREATE, Perm.MEMBER_READ, Perm.DOMAIN_VERIFY, Perm.CRAWL_RUN,
+                                        Perm.ISSUE_MANAGE}),
     },
     "seo_analyst": {
         "name": "SEO/AEO Analyst", "scope": "granted",
         "perms": frozenset({Perm.CLIENT_READ, Perm.BRAND_MANAGE, Perm.DOMAIN_MANAGE, Perm.PROJECT_MANAGE,
-                            Perm.COMPETITOR_MANAGE, Perm.NOTE_READ, Perm.NOTE_MANAGE}),
+                            Perm.COMPETITOR_MANAGE, Perm.NOTE_READ, Perm.NOTE_MANAGE, Perm.DOMAIN_VERIFY,
+                            Perm.CRAWL_RUN, Perm.ISSUE_MANAGE}),
     },
     "content_editor": {
         "name": "Content Editor", "scope": "granted",
@@ -76,7 +84,7 @@ ROLES: dict[str, dict[str, object]] = {
     },
     "technical_implementer": {
         "name": "Technical Implementer", "scope": "granted",
-        "perms": frozenset({Perm.CLIENT_READ, Perm.NOTE_READ, Perm.NOTE_MANAGE}),
+        "perms": frozenset({Perm.CLIENT_READ, Perm.NOTE_READ, Perm.NOTE_MANAGE, Perm.ISSUE_MANAGE}),
     },
     "client_admin": {"name": "Client Admin", "scope": "granted", "perms": frozenset({Perm.CLIENT_READ})},
     "client_viewer": {"name": "Client Viewer", "scope": "granted", "perms": frozenset({Perm.CLIENT_READ})},

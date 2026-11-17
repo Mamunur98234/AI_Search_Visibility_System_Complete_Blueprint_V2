@@ -19,9 +19,9 @@ test("agency owner onboards a client, invites a scoped viewer, and the audit log
 
   // Disabled future modules are visible with their phase, not dead links.
   const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByText("Technical audit")).toBeVisible();
-  await expect(nav.getByText("Technical audit")).toHaveAttribute("aria-disabled", "true");
-  await expect(nav.getByRole("link", { name: "Technical audit" })).toHaveCount(0);
+  await expect(nav.getByText("AI visibility explorer")).toBeVisible();
+  await expect(nav.getByText("AI visibility explorer")).toHaveAttribute("aria-disabled", "true");
+  await expect(nav.getByRole("link", { name: "AI visibility explorer" })).toHaveCount(0);
 
   // Create two clients.
   await page.getByRole("link", { name: "Clients" }).click();

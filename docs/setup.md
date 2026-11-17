@@ -16,6 +16,9 @@ cp .env.example .env        # then set ENCRYPTION_KEYS (command in the file)
 alembic upgrade head        # runs as aisv_owner
 DEMO_PASSWORD='choose-a-local-password' python -m scripts.seed_demo   # optional, labelled demo data
 uvicorn app.main:app --reload --port 8000
+# Crawls: with REDIS_URL set, run a worker in another terminal:
+#   celery -A app.worker worker -Q crawl --loglevel INFO
+# or set CRAWL_EXECUTION=thread in .env to run crawls in the API process (development only).
 
 # 3. Web (new terminal)
 cd apps/web
@@ -48,8 +51,9 @@ docker compose up -d --build
 # open http://localhost:8080
 ```
 
-Topology: `caddy` (edge, TLS) → `web` (Next.js) → `api` (FastAPI) → `postgres`, `redis`.
-`api`, `postgres` and `redis` are on an **internal** network with no published ports.
+Topology: `caddy` (edge, TLS) → `web` (Next.js) → `api` (FastAPI) → `postgres`, `redis`; `worker` (Celery) runs crawls.
+`postgres` and `redis` are on an **internal** network. `api` and `worker` additionally join an `egress` network
+for outbound verification/crawl requests (SafeFetcher refuses private addresses). Nothing but Caddy publishes ports.
 
 Production checklist:
 - `APP_ENV=production` (enforces SMTP email, Redis, encryption keys; enables `__Host-` Secure cookies and HSTS).

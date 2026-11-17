@@ -432,3 +432,153 @@ class NoteOut(Out):
     author_user_id: uuid.UUID | None
     body: str
     created_at: datetime
+
+
+# ---------- Phase 2: verification, crawls, audits ----------
+VerificationMethod = Literal["dns_txt", "meta_tag", "well_known"]
+
+
+class VerificationStartIn(BaseModel):
+    method: VerificationMethod
+
+
+class VerificationOut(BaseModel):
+    domain_id: uuid.UUID
+    hostname: str
+    status: str
+    method: str | None
+    instructions: dict[str, str] | None
+    checked_at: datetime | None
+    verified_at: datetime | None
+    error: str | None
+
+
+class DomainListOut(BaseModel):
+    id: uuid.UUID
+    client_id: uuid.UUID
+    client_name: str
+    hostname: str
+    is_primary: bool
+    verification_status: str
+    verified_at: datetime | None
+    last_crawl_id: uuid.UUID | None
+    last_crawl_status: str | None
+    last_crawl_at: datetime | None
+
+
+class CrawlIn(BaseModel):
+    max_pages: int = Field(200, ge=1, le=5000)
+    max_depth: int = Field(5, ge=0, le=20)
+    delay_ms: int = Field(1000, ge=0, le=10000)
+
+
+class CrawlOut(Out):
+    id: uuid.UUID
+    client_id: uuid.UUID
+    domain_id: uuid.UUID
+    hostname: str
+    status: str
+    requested_action: str | None
+    max_pages: int
+    max_depth: int
+    delay_ms: int
+    base_url: str | None
+    user_agent: str
+    robots_outcome: str | None
+    robots_status: int | None
+    crawl_delay_s: float | None
+    sitemap_urls_found: int
+    pages_fetched: int
+    pages_skipped: int
+    pages_errored: int
+    urls_discovered: int
+    urls_dropped: int
+    note: str | None
+    error: str | None
+    created_at: datetime
+    started_at: datetime | None
+    finished_at: datetime | None
+
+
+class CrawlDetailOut(CrawlOut):
+    state_counts: dict[str, int] = Field(default_factory=dict)
+    robots_txt: str | None = None
+
+
+class CrawlPageOut(Out):
+    id: uuid.UUID
+    url: str
+    depth: int
+    source: str
+    state: str
+    skip_reason: str | None
+    error_detail: str | None
+    status_code: int | None
+    final_url: str | None
+    redirect_chain: list[dict[str, object]] | None
+    content_type: str | None
+    bytes: int | None
+    fetch_ms: int | None
+    fetched_at: datetime | None
+    title: str | None
+    meta_description: str | None
+    meta_robots: str | None
+    x_robots_tag: str | None
+    canonical: str | None
+    h1: list[str] | None
+    h2_count: int | None
+    lang: str | None
+    word_count: int | None
+    jsonld: list[dict[str, object]] | None
+    is_indexable: bool | None
+
+
+class RuleOut(BaseModel):
+    key: str
+    title: str
+    severity: str
+    eligible_definition: str
+    why: str
+
+
+class RuleResultOut(RuleOut):
+    eligible_count: int
+    affected_count: int
+    rate: float | None  # null when eligible_count == 0 ("no data"), never 0
+
+
+class Provenance(BaseModel):
+    source: str
+    method: str
+    scope: str
+    collected_from: datetime | None
+    collected_to: datetime | None
+    confidence_label: str
+    sample_size: int
+    limitations: list[str]
+
+
+class AuditSummaryOut(BaseModel):
+    audit_run_id: uuid.UUID
+    crawl_id: uuid.UUID
+    ruleset_version: str
+    pages_fetched: int
+    created_at: datetime
+    rules: list[RuleResultOut]
+    provenance: Provenance
+
+
+class IssueOut(Out):
+    id: uuid.UUID
+    rule_key: str
+    severity: str
+    url: str
+    crawl_page_id: uuid.UUID | None
+    evidence: dict[str, object]
+    status: str
+    status_note: str | None
+
+
+class IssueUpdate(BaseModel):
+    status: Literal["open", "accepted", "wont_fix"]
+    note: Annotated[str, StringConstraints(strip_whitespace=True, max_length=1000)] | None = None

@@ -21,6 +21,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/audit-rules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Audit Rules
+         * @description Methodology: every rule, its denominator and rationale (ruleset version in the header).
+         */
+        get: operations["audit_rules_api_v1_audit_rules_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/csrf": {
         parameters: {
             query?: never;
@@ -304,6 +324,23 @@ export interface paths {
         patch: operations["update_client_api_v1_clients__client_id__patch"];
         trace?: never;
     };
+    "/api/v1/clients/{client_id}/crawls": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Crawls */
+        get: operations["list_crawls_api_v1_clients__client_id__crawls_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/clients/{client_id}/notes": {
         parameters: {
             query?: never;
@@ -432,6 +469,194 @@ export interface paths {
         patch: operations["update_contact_api_v1_contacts__item_id__patch"];
         trace?: never;
     };
+    "/api/v1/crawls/{crawl_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Crawl */
+        get: operations["read_crawl_api_v1_crawls__crawl_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crawls/{crawl_id}/audit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Audit Summary */
+        get: operations["audit_summary_api_v1_crawls__crawl_id__audit_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crawls/{crawl_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Crawl */
+        post: operations["cancel_crawl_api_v1_crawls__crawl_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crawls/{crawl_id}/issues": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Crawl Issues */
+        get: operations["crawl_issues_api_v1_crawls__crawl_id__issues_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crawls/{crawl_id}/pages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Crawl Pages */
+        get: operations["crawl_pages_api_v1_crawls__crawl_id__pages_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crawls/{crawl_id}/pause": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pause Crawl */
+        post: operations["pause_crawl_api_v1_crawls__crawl_id__pause_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/crawls/{crawl_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Crawl */
+        post: operations["resume_crawl_api_v1_crawls__crawl_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/domains": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Domains */
+        get: operations["list_domains_api_v1_domains_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/domains/{domain_id}/crawls": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Crawl */
+        post: operations["start_crawl_api_v1_domains__domain_id__crawls_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/domains/{domain_id}/verification": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Verification */
+        get: operations["get_verification_api_v1_domains__domain_id__verification_get"];
+        put?: never;
+        /** Start Verification */
+        post: operations["start_verification_api_v1_domains__domain_id__verification_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/domains/{domain_id}/verification/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check Verification */
+        post: operations["check_verification_api_v1_domains__domain_id__verification_check_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/domains/{item_id}": {
         parameters: {
             query?: never;
@@ -534,6 +759,23 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/issues/{issue_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Issue */
+        patch: operations["update_issue_api_v1_issues__issue_id__patch"];
         trace?: never;
     };
     "/api/v1/members": {
@@ -824,6 +1066,31 @@ export interface components {
             /** Request Id */
             request_id: string | null;
         };
+        /** AuditSummaryOut */
+        AuditSummaryOut: {
+            /**
+             * Audit Run Id
+             * Format: uuid
+             */
+            audit_run_id: string;
+            /**
+             * Crawl Id
+             * Format: uuid
+             */
+            crawl_id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Pages Fetched */
+            pages_fetched: number;
+            provenance: components["schemas"]["Provenance"];
+            /** Rules */
+            rules: components["schemas"]["RuleResultOut"][];
+            /** Ruleset Version */
+            ruleset_version: string;
+        };
         /** BrandIn */
         BrandIn: {
             /** Aliases */
@@ -1042,6 +1309,220 @@ export interface components {
             /** Phone */
             phone?: string | null;
         };
+        /** CrawlDetailOut */
+        CrawlDetailOut: {
+            /** Base Url */
+            base_url: string | null;
+            /**
+             * Client Id
+             * Format: uuid
+             */
+            client_id: string;
+            /** Crawl Delay S */
+            crawl_delay_s: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Delay Ms */
+            delay_ms: number;
+            /**
+             * Domain Id
+             * Format: uuid
+             */
+            domain_id: string;
+            /** Error */
+            error: string | null;
+            /** Finished At */
+            finished_at: string | null;
+            /** Hostname */
+            hostname: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Max Depth */
+            max_depth: number;
+            /** Max Pages */
+            max_pages: number;
+            /** Note */
+            note: string | null;
+            /** Pages Errored */
+            pages_errored: number;
+            /** Pages Fetched */
+            pages_fetched: number;
+            /** Pages Skipped */
+            pages_skipped: number;
+            /** Requested Action */
+            requested_action: string | null;
+            /** Robots Outcome */
+            robots_outcome: string | null;
+            /** Robots Status */
+            robots_status: number | null;
+            /** Robots Txt */
+            robots_txt?: string | null;
+            /** Sitemap Urls Found */
+            sitemap_urls_found: number;
+            /** Started At */
+            started_at: string | null;
+            /** State Counts */
+            state_counts?: {
+                [key: string]: number;
+            };
+            /** Status */
+            status: string;
+            /** Urls Discovered */
+            urls_discovered: number;
+            /** Urls Dropped */
+            urls_dropped: number;
+            /** User Agent */
+            user_agent: string;
+        };
+        /** CrawlIn */
+        CrawlIn: {
+            /**
+             * Delay Ms
+             * @default 1000
+             */
+            delay_ms: number;
+            /**
+             * Max Depth
+             * @default 5
+             */
+            max_depth: number;
+            /**
+             * Max Pages
+             * @default 200
+             */
+            max_pages: number;
+        };
+        /** CrawlOut */
+        CrawlOut: {
+            /** Base Url */
+            base_url: string | null;
+            /**
+             * Client Id
+             * Format: uuid
+             */
+            client_id: string;
+            /** Crawl Delay S */
+            crawl_delay_s: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Delay Ms */
+            delay_ms: number;
+            /**
+             * Domain Id
+             * Format: uuid
+             */
+            domain_id: string;
+            /** Error */
+            error: string | null;
+            /** Finished At */
+            finished_at: string | null;
+            /** Hostname */
+            hostname: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Max Depth */
+            max_depth: number;
+            /** Max Pages */
+            max_pages: number;
+            /** Note */
+            note: string | null;
+            /** Pages Errored */
+            pages_errored: number;
+            /** Pages Fetched */
+            pages_fetched: number;
+            /** Pages Skipped */
+            pages_skipped: number;
+            /** Requested Action */
+            requested_action: string | null;
+            /** Robots Outcome */
+            robots_outcome: string | null;
+            /** Robots Status */
+            robots_status: number | null;
+            /** Sitemap Urls Found */
+            sitemap_urls_found: number;
+            /** Started At */
+            started_at: string | null;
+            /** Status */
+            status: string;
+            /** Urls Discovered */
+            urls_discovered: number;
+            /** Urls Dropped */
+            urls_dropped: number;
+            /** User Agent */
+            user_agent: string;
+        };
+        /** CrawlPageOut */
+        CrawlPageOut: {
+            /** Bytes */
+            bytes: number | null;
+            /** Canonical */
+            canonical: string | null;
+            /** Content Type */
+            content_type: string | null;
+            /** Depth */
+            depth: number;
+            /** Error Detail */
+            error_detail: string | null;
+            /** Fetch Ms */
+            fetch_ms: number | null;
+            /** Fetched At */
+            fetched_at: string | null;
+            /** Final Url */
+            final_url: string | null;
+            /** H1 */
+            h1: string[] | null;
+            /** H2 Count */
+            h2_count: number | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Indexable */
+            is_indexable: boolean | null;
+            /** Jsonld */
+            jsonld: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Lang */
+            lang: string | null;
+            /** Meta Description */
+            meta_description: string | null;
+            /** Meta Robots */
+            meta_robots: string | null;
+            /** Redirect Chain */
+            redirect_chain: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Skip Reason */
+            skip_reason: string | null;
+            /** Source */
+            source: string;
+            /** State */
+            state: string;
+            /** Status Code */
+            status_code: number | null;
+            /** Title */
+            title: string | null;
+            /** Url */
+            url: string;
+            /** Word Count */
+            word_count: number | null;
+            /** X Robots Tag */
+            x_robots_tag: string | null;
+        };
         /** DomainIn */
         DomainIn: {
             /** Hostname */
@@ -1051,6 +1532,35 @@ export interface components {
              * @default false
              */
             is_primary: boolean;
+        };
+        /** DomainListOut */
+        DomainListOut: {
+            /**
+             * Client Id
+             * Format: uuid
+             */
+            client_id: string;
+            /** Client Name */
+            client_name: string;
+            /** Hostname */
+            hostname: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Primary */
+            is_primary: boolean;
+            /** Last Crawl At */
+            last_crawl_at: string | null;
+            /** Last Crawl Id */
+            last_crawl_id: string | null;
+            /** Last Crawl Status */
+            last_crawl_status: string | null;
+            /** Verification Status */
+            verification_status: string;
+            /** Verified At */
+            verified_at: string | null;
         };
         /** DomainOut */
         DomainOut: {
@@ -1149,6 +1659,40 @@ export interface components {
              * @enum {string}
              */
             role: "agency_owner" | "agency_admin" | "account_manager" | "seo_analyst" | "content_editor" | "technical_implementer" | "client_admin" | "client_viewer" | "auditor";
+        };
+        /** IssueOut */
+        IssueOut: {
+            /** Crawl Page Id */
+            crawl_page_id: string | null;
+            /** Evidence */
+            evidence: {
+                [key: string]: unknown;
+            };
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Rule Key */
+            rule_key: string;
+            /** Severity */
+            severity: string;
+            /** Status */
+            status: string;
+            /** Status Note */
+            status_note: string | null;
+            /** Url */
+            url: string;
+        };
+        /** IssueUpdate */
+        IssueUpdate: {
+            /** Note */
+            note?: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "open" | "accepted" | "wont_fix";
         };
         /** LanguageOut */
         LanguageOut: {
@@ -1292,6 +1836,20 @@ export interface components {
             /** Next Cursor */
             next_cursor: string | null;
         };
+        /** Page[CrawlPageOut] */
+        Page_CrawlPageOut_: {
+            /** Items */
+            items: components["schemas"]["CrawlPageOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+        };
+        /** Page[IssueOut] */
+        Page_IssueOut_: {
+            /** Items */
+            items: components["schemas"]["IssueOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+        };
         /** PermissionOut */
         PermissionOut: {
             /** Description */
@@ -1381,6 +1939,25 @@ export interface components {
             /** Status */
             status?: ("active" | "paused" | "completed") | null;
         };
+        /** Provenance */
+        Provenance: {
+            /** Collected From */
+            collected_from: string | null;
+            /** Collected To */
+            collected_to: string | null;
+            /** Confidence Label */
+            confidence_label: string;
+            /** Limitations */
+            limitations: string[];
+            /** Method */
+            method: string;
+            /** Sample Size */
+            sample_size: number;
+            /** Scope */
+            scope: string;
+            /** Source */
+            source: string;
+        };
         /** RecoveryCodesOut */
         RecoveryCodesOut: {
             /** Recovery Codes */
@@ -1403,6 +1980,38 @@ export interface components {
             permissions: string[];
             /** Scope */
             scope: string;
+        };
+        /** RuleOut */
+        RuleOut: {
+            /** Eligible Definition */
+            eligible_definition: string;
+            /** Key */
+            key: string;
+            /** Severity */
+            severity: string;
+            /** Title */
+            title: string;
+            /** Why */
+            why: string;
+        };
+        /** RuleResultOut */
+        RuleResultOut: {
+            /** Affected Count */
+            affected_count: number;
+            /** Eligible Count */
+            eligible_count: number;
+            /** Eligible Definition */
+            eligible_definition: string;
+            /** Key */
+            key: string;
+            /** Rate */
+            rate: number | null;
+            /** Severity */
+            severity: string;
+            /** Title */
+            title: string;
+            /** Why */
+            why: string;
         };
         /** SignupIn */
         SignupIn: {
@@ -1475,6 +2084,38 @@ export interface components {
             /** Error Type */
             type: string;
         };
+        /** VerificationOut */
+        VerificationOut: {
+            /** Checked At */
+            checked_at: string | null;
+            /**
+             * Domain Id
+             * Format: uuid
+             */
+            domain_id: string;
+            /** Error */
+            error: string | null;
+            /** Hostname */
+            hostname: string;
+            /** Instructions */
+            instructions: {
+                [key: string]: string;
+            } | null;
+            /** Method */
+            method: string | null;
+            /** Status */
+            status: string;
+            /** Verified At */
+            verified_at: string | null;
+        };
+        /** VerificationStartIn */
+        VerificationStartIn: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "dns_txt" | "meta_tag" | "well_known";
+        };
     };
     responses: never;
     parameters: never;
@@ -1516,6 +2157,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    audit_rules_api_v1_audit_rules_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RuleOut"][];
                 };
             };
         };
@@ -2148,6 +2809,37 @@ export interface operations {
             };
         };
     };
+    list_crawls_api_v1_clients__client_id__crawls_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                client_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrawlOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_notes_api_v1_clients__client_id__notes_get: {
         parameters: {
             query?: never;
@@ -2668,6 +3360,396 @@ export interface operations {
             };
         };
     };
+    read_crawl_api_v1_crawls__crawl_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrawlDetailOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    audit_summary_api_v1_crawls__crawl_id__audit_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuditSummaryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_crawl_api_v1_crawls__crawl_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrawlOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    crawl_issues_api_v1_crawls__crawl_id__issues_get: {
+        parameters: {
+            query?: {
+                rule?: string | null;
+                status?: string | null;
+                cursor?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Page_IssueOut_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    crawl_pages_api_v1_crawls__crawl_id__pages_get: {
+        parameters: {
+            query?: {
+                state?: string | null;
+                q?: string | null;
+                cursor?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Page_CrawlPageOut_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pause_crawl_api_v1_crawls__crawl_id__pause_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrawlOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_crawl_api_v1_crawls__crawl_id__resume_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                crawl_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrawlOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_domains_api_v1_domains_get: {
+        parameters: {
+            query?: {
+                status?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DomainListOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_crawl_api_v1_domains__domain_id__crawls_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                domain_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CrawlIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CrawlOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_verification_api_v1_domains__domain_id__verification_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                domain_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_verification_api_v1_domains__domain_id__verification_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                domain_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerificationStartIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    check_verification_api_v1_domains__domain_id__verification_check_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                domain_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     read_domain_api_v1_domains__item_id__get: {
         parameters: {
             query?: never;
@@ -2873,6 +3955,41 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_issue_api_v1_issues__issue_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                issue_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IssueUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IssueOut"];
+                };
             };
             /** @description Validation Error */
             422: {

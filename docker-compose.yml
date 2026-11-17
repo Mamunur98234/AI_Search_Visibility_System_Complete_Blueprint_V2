@@ -55,6 +55,7 @@ services:
       SMTP_USERNAME: ${SMTP_USERNAME:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM: ${SMTP_FROM:-no-reply@localhost}
+      CRAWL_EXECUTION: celery
     depends_on:
       migrate: { condition: service_completed_successfully }
       redis: { condition: service_healthy }
@@ -62,7 +63,26 @@ services:
       test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/api/v1/readyz')"]
       interval: 10s
       retries: 12
-    networks: [backend]   # not reachable from the edge network or the host
+    # backend: database/queue (internal only). egress: outbound HTTPS/DNS for domain verification checks.
+    # Neither network is reachable from the edge proxy or the host; SafeFetcher blocks private addresses.
+    networks: [backend, egress]
+
+  worker:
+    build: ./apps/api
+    command: ["celery", "-A", "app.worker", "worker", "-Q", "crawl", "--concurrency", "2", "--loglevel", "INFO"]
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DATABASE_URL: postgresql+psycopg://aisv_app:${AISV_APP_PASSWORD}@postgres:5432/aisv
+      REDIS_URL: redis://redis:6379/0
+      ENCRYPTION_KEYS: ${ENCRYPTION_KEYS:?set in .env}
+      PUBLIC_WEB_URL: ${PUBLIC_WEB_URL:?set in .env}
+      EMAIL_BACKEND: ${EMAIL_BACKEND:-console}
+      SMTP_HOST: ${SMTP_HOST:-}
+      CRAWL_EXECUTION: celery
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      redis: { condition: service_healthy }
+    networks: [backend, egress]
 
   web:
     build:
@@ -91,6 +111,7 @@ networks:
   backend:
     internal: true
   edge: {}
+  egress: {}
 
 volumes:
   pgdata: {}

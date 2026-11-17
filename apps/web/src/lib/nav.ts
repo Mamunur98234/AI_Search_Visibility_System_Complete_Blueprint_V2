@@ -14,8 +14,7 @@ export const NAV: NavGroup[] = [
   {
     label: "Work",
     items: [
-      { label: "Domain verification", phase: 2 },
-      { label: "Technical audit", phase: 2 },
+      { label: "Domains & audits", href: "/domains", perm: "client.read" },
       { label: "Search integrations", phase: 3 },
       { label: "AI visibility explorer", phase: 4 },
       { label: "Prompt sets", phase: 4 },

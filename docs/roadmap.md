@@ -32,7 +32,7 @@ Acceptance:
 5. CSRF, session rotation, login rate limit tests pass.
 6. Lighthouse/axe: no critical accessibility violations on shell screens.
 
-## Phase 2 — Domain verification, safe crawler, technical SEO MVP
+## Phase 2 — Domain verification, safe crawler, technical SEO MVP ✅ (see phase-2-report.md)
 Acceptance: DNS TXT / meta / file verification; crawl only verified domains; SSRF test suite passes;
 robots respected; pause/cancel works; issues for status, redirects, canonical, robots, sitemap,
 title/meta, headings, internal/broken links, duplicate titles/descriptions, JSON-LD syntax;
